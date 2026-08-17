@@ -75,9 +75,8 @@ const forgotPassword = async (email) => {
   try {
     await sendPasswordResetEmail(user.email, resetUrl);
   } catch (error) {
-    // Don't leak SMTP failures to the client, but do log them — and log the link
-    // itself in non-production so the flow is testable without real SMTP creds.
     logger.error(`Failed to send password reset email: ${error.message}`);
+    console.error(`[MAIL ERROR] Failed to send password reset email to ${user.email}: ${error.message}`);
     if (env.nodeEnv !== "production") {
       logger.info(`[DEV ONLY] Password reset link for ${user.email}: ${resetUrl}`);
     }
