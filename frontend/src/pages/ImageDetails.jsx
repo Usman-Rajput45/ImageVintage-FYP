@@ -29,11 +29,9 @@ const normalizeFallbackTags = (tags = []) => {
 const buildFallbackItem = (fallback) => {
   if (!fallback) return null;
 
-  const createdAt = fallback.createdAt
-    ? new Date(fallback.createdAt).toISOString()
-    : fallback.date && fallback.time
-    ? new Date(`${fallback.date} ${fallback.time}`).toISOString()
-    : undefined;
+  const fallbackDate = fallback.createdAt || (fallback.date && fallback.time ? `${fallback.date} ${fallback.time}` : null);
+  const parsedDate = fallbackDate ? new Date(fallbackDate) : null;
+  const createdAt = parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : undefined;
 
   return {
     imageSrc: fallback.imageUrl,
@@ -58,50 +56,58 @@ const ImageDetails = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingLabel, setEditingLabel] = useState("");
   const [tagError, setTagError] = useState(null);
+  const [detailError, setDetailError] = useState(null);
 
   useEffect(() => {
     const loadItem = async () => {
-      const idValue = id?.toString?.().trim?.();
-      const parsedIndex = Number.isFinite(Number(idValue)) ? Number.parseInt(idValue, 10) : NaN;
-
-      let historyMatch = HISTORY_ITEMS.find(
-        (historyItem) => String(historyItem.id).trim() === idValue
-      );
-
-      // If no exact id match, try treating the id as a 1-based index into HISTORY_ITEMS
-      if (!historyMatch && Number.isInteger(parsedIndex) && parsedIndex >= 1 && parsedIndex <= HISTORY_ITEMS.length) {
-        historyMatch = HISTORY_ITEMS[parsedIndex - 1];
-      }
-
-      // More permissive matching: substring matches and filename/imageUrl contains
-      if (!historyMatch) {
-        const lowerId = (idValue || "").toLowerCase();
-        historyMatch = HISTORY_ITEMS.find((historyItem) => {
-          const hid = String(historyItem.id || "").toLowerCase();
-          const fname = String(historyItem.filename || historyItem.fileName || "").toLowerCase();
-          const iurl = String(historyItem.imageUrl || historyItem.imageSrc || "").toLowerCase();
-
-          return (
-            hid === lowerId ||
-            hid.includes(lowerId) ||
-            lowerId.includes(hid) ||
-            fname === lowerId ||
-            fname.includes(lowerId) ||
-            iurl.includes(lowerId)
-          );
-        });
-      }
-
-      const fallbackItem = historyMatch ? buildFallbackItem(historyMatch) : null;
-
-      if (fallbackItem) {
-        setItem(fallbackItem);
-        setTags(fallbackItem.tags || []);
-      }
+      let fallbackItem = null;
 
       try {
         setLoading(true);
+        setDetailError(null);
+
+        const idValue = id?.toString?.().trim?.();
+        console.log("[ImageDetails] Loading analysis for id:", idValue);
+
+        const parsedIndex = Number.isFinite(Number(idValue)) ? Number.parseInt(idValue, 10) : NaN;
+
+        let historyMatch = HISTORY_ITEMS.find(
+          (historyItem) => String(historyItem.id).trim() === idValue
+        );
+
+        if (!historyMatch && Number.isInteger(parsedIndex) && parsedIndex >= 1 && parsedIndex <= HISTORY_ITEMS.length) {
+          historyMatch = HISTORY_ITEMS[parsedIndex - 1];
+        }
+
+        if (!historyMatch) {
+          const lowerId = (idValue || "").toLowerCase();
+          historyMatch = HISTORY_ITEMS.find((historyItem) => {
+            const hid = String(historyItem.id || "").toLowerCase();
+            const fname = String(historyItem.filename || historyItem.fileName || "").toLowerCase();
+            const iurl = String(historyItem.imageUrl || historyItem.imageSrc || "").toLowerCase();
+
+            return (
+              hid === lowerId ||
+              hid.includes(lowerId) ||
+              lowerId.includes(hid) ||
+              fname === lowerId ||
+              fname.includes(lowerId) ||
+              iurl.includes(lowerId)
+            );
+          });
+        }
+
+        fallbackItem = historyMatch ? buildFallbackItem(historyMatch) : null;
+        console.log("[ImageDetails] Fallback item:", fallbackItem ? "found" : "not found");
+
+        if (fallbackItem) {
+          setItem(fallbackItem);
+          setTags(fallbackItem.tags || []);
+        }
+
+        console.log("[ImageDetails] Fetching analysis by id:", idValue);
         const result = await getAnalysisById(idValue);
+        console.log("[ImageDetails] API result:", result);
 
         if (result && (result.imageSrc || result.imageUrl)) {
           const mergedItem = {
@@ -116,6 +122,7 @@ const ImageDetails = () => {
             createdAt: result?.createdAt || fallbackItem?.createdAt,
             tags: result?.tags?.length ? result.tags : fallbackItem?.tags,
           };
+          console.log("[ImageDetails] Merged item:", mergedItem);
           setItem(mergedItem);
           setTags(mergedItem.tags || []);
           return;
@@ -126,7 +133,8 @@ const ImageDetails = () => {
           setTags([]);
         }
       } catch (error) {
-        console.error("Failed to load analysis details", error);
+        console.error("[ImageDetails] Failed to load analysis details", error);
+        setDetailError(error.response?.data?.message || error.message || "Could not load analysis details. Please try again.");
         if (!fallbackItem) {
           setItem(null);
           setTags([]);
@@ -136,7 +144,12 @@ const ImageDetails = () => {
       }
     };
 
-    if (id) loadItem();
+    if (id) {
+      loadItem();
+    } else {
+      setLoading(false);
+      setDetailError("Analysis details could not be loaded because no analysis ID was provided.");
+    }
   }, [id]);
 
   if (loading && !item) {
@@ -159,7 +172,7 @@ const ImageDetails = () => {
           <div className="rounded-[28px] border border-[#dbe0ff] bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
             <h1 className="text-2xl font-semibold text-[#101828]">Analysis details not found</h1>
             <p className="mt-4 text-sm text-[#475569]">
-              We could not load details for this history item. Please go back to the history list.
+              {detailError || "We could not load details for this history item. Please go back to the history list."}
             </p>
             <Link
               to="/history"

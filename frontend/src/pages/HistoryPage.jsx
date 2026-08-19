@@ -25,11 +25,13 @@ const monthNames = {
 };
 
 const getItemTimestamp = (item) => {
-  const [monthName, day, year] = item.date.split(" ");
+  const dateStr = item?.date || "";
+  const timeStr = item?.time || "";
+  const [monthName, day, year] = dateStr.split(" ");
   const month = monthNames[monthName] ?? 0;
-  const parsedDay = parseInt(day.replace(",", ""), 10) || 1;
+  const parsedDay = parseInt((day || "").replace(",", ""), 10) || 1;
 
-  const timeParts = item.time.split(":");
+  const timeParts = timeStr.split(":");
   let hour = parseInt(timeParts[0], 10) || 0;
   let minute = 0;
   let meridiem = "";
@@ -65,7 +67,7 @@ const HistoryPage = () => {
 
   // Debounce the search box so we don't hit the backend on every keystroke (FR-12 / UC-08)
   useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedQuery(searchQuery.trim()), 350);
+    const timeout = setTimeout(() => setDebouncedQuery((searchQuery || "").trim()), 350);
     return () => clearTimeout(timeout);
   }, [searchQuery]);
 
@@ -108,15 +110,18 @@ const HistoryPage = () => {
   const filteredItems = useMemo(() => {
     return historyItems
       .filter((item) => {
+        const confidence = item.confidence || 0;
         const matchesFilter =
           filterOption === "all" ||
-          (filterOption === "high" && item.confidence >= 90) ||
-          (filterOption === "medium" && item.confidence >= 80 && item.confidence < 90);
+          (filterOption === "high" && confidence >= 90) ||
+          (filterOption === "medium" && confidence >= 80 && confidence < 90);
 
         return matchesFilter;
       })
       .sort((a, b) => {
-        const diff = getItemTimestamp(b) - getItemTimestamp(a);
+        const timeA = getItemTimestamp(a) || 0;
+        const timeB = getItemTimestamp(b) || 0;
+        const diff = timeB - timeA;
         return sortOption === "newest" ? diff : -diff;
       });
   }, [historyItems, filterOption, sortOption]);

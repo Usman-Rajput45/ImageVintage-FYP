@@ -35,6 +35,7 @@ export const normalizeAnalysisResponse = (payload, fallback = {}) => {
   const fileName = data.fileName ?? fallback.fileName ?? "image.jpg";
   const fileSize = data.fileSize ?? fallback.fileSize ?? "";
   const confidenceAvg = data.confidenceAvg ?? data.confidence ?? fallback.confidenceAvg ?? 0;
+  const createdAt = data.createdAt ?? fallback.createdAt ?? null;
 
   return {
     imageSrc,
@@ -43,6 +44,7 @@ export const normalizeAnalysisResponse = (payload, fallback = {}) => {
     caption,
     tags: normalizeTags(tags),
     confidenceAvg,
+    createdAt,
     raw: data,
   };
 };
@@ -108,7 +110,7 @@ export const getAnalysisHistory = async (tag = "") => {
   const items = Array.isArray(payload) ? payload : payload?.analyses ?? [];
 
   return items.map((item, index) => ({
-    id: item._id || item.id || `${index + 1}`,
+    id: String(item._id || item.id || `${index + 1}`),
     imageUrl: item.imageUrl || item.imageSrc || "",
     imageAlt: item.fileName || "Analysis result",
     filename: item.fileName || item.filename || "analysis.jpg",
