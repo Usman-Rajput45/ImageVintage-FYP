@@ -1,0 +1,408 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@plugin "@tailwindcss/forms";
+@plugin "tailwindcss-animate";
+
+/* ── VisionTag Design Tokens (Tailwind v4 @theme) ── */
+@theme {
+  /* Colors */
+  --color-vt-primary: #004ac6;
+  --color-vt-on-primary: #ffffff;
+  --color-vt-primary-container: #2563eb;
+  --color-vt-on-primary-container: #eeefff;
+  --color-vt-primary-fixed: #dbe1ff;
+  --color-vt-primary-fixed-dim: #b4c5ff;
+  --color-vt-on-primary-fixed: #00174b;
+  --color-vt-on-primary-fixed-variant: #003ea8;
+  --color-vt-inverse-primary: #b4c5ff;
+
+  --color-vt-secondary: #006c49;
+  --color-vt-on-secondary: #ffffff;
+  --color-vt-secondary-container: #6cf8bb;
+  --color-vt-on-secondary-container: #00714d;
+  --color-vt-secondary-fixed: #6ffbbe;
+  --color-vt-secondary-fixed-dim: #4edea3;
+  --color-vt-on-secondary-fixed: #002113;
+  --color-vt-on-secondary-fixed-variant: #005236;
+
+  --color-vt-tertiary: #784b00;
+  --color-vt-on-tertiary: #ffffff;
+  --color-vt-tertiary-container: #996100;
+  --color-vt-on-tertiary-container: #ffeedd;
+  --color-vt-tertiary-fixed: #ffddb8;
+  --color-vt-tertiary-fixed-dim: #ffb95f;
+  --color-vt-on-tertiary-fixed: #2a1700;
+  --color-vt-on-tertiary-fixed-variant: #653e00;
+
+  --color-vt-error: #ba1a1a;
+  --color-vt-on-error: #ffffff;
+  --color-vt-error-container: #ffdad6;
+  --color-vt-on-error-container: #93000a;
+
+  --color-vt-background: #f9f9ff;
+  --color-vt-on-background: #151c27;
+  --color-vt-surface: #f9f9ff;
+  --color-vt-on-surface: #151c27;
+  --color-vt-surface-variant: #dce2f3;
+  --color-vt-on-surface-variant: #434655;
+  --color-vt-surface-bright: #f9f9ff;
+  --color-vt-surface-dim: #d3daea;
+  --color-vt-surface-tint: #0053db;
+  --color-vt-surface-container-lowest: #ffffff;
+  --color-vt-surface-container-low: #f0f3ff;
+  --color-vt-surface-container: #e7eefe;
+  --color-vt-surface-container-high: #e2e8f8;
+  --color-vt-surface-container-highest: #dce2f3;
+  --color-vt-inverse-surface: #2a313d;
+  --color-vt-inverse-on-surface: #ebf1ff;
+
+  --color-vt-outline: #737686;
+  --color-vt-outline-variant: #c3c6d7;
+
+  /* Spacing — applies to p-*, m-*, gap-*, px-*, py-* etc. */
+  --spacing-vt-xs: 4px;
+  --spacing-vt-sm: 8px;
+  --spacing-vt-base: 8px;
+  --spacing-vt-md: 16px;
+  --spacing-vt-gutter: 16px;
+  --spacing-vt-lg: 24px;
+  --spacing-vt-xl: 32px;
+
+  /* Border radius — rounded-vt-* */
+  --radius-vt-sm: 0.25rem;
+  --radius-vt-lg: 0.5rem;
+  --radius-vt-xl: 0.75rem;
+  --radius-vt-full: 9999px;
+
+  /* Max width — max-w-vt-container */
+  --max-width-vt-container: 1280px;
+
+  /* Font sizes — text-vt-* */
+  --text-vt-headline-lg: 32px;
+  --text-vt-headline-lg--line-height: 1.2;
+  --text-vt-headline-md: 20px;
+  --text-vt-headline-md--line-height: 1.3;
+  --text-vt-headline-lg-mobile: 24px;
+  --text-vt-headline-lg-mobile--line-height: 1.2;
+  --text-vt-body-lg: 18px;
+  --text-vt-body-lg--line-height: 1.5;
+  --text-vt-body-md: 16px;
+  --text-vt-body-md--line-height: 1.5;
+  --text-vt-body-sm: 14px;
+  --text-vt-body-sm--line-height: 1.5;
+  --text-vt-label-md: 14px;
+  --text-vt-label-md--line-height: 1;
+  --text-vt-label-sm: 12px;
+  --text-vt-label-sm--line-height: 1;
+}
+
+@layer base {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium;
+    font-family: "Inter", sans-serif !important;
+  }
+}
+
+
+
+
+html {
+  font-size: 16px;
+}
+
+/* Adjust for larger screens */
+@media (min-width: 2560px) {
+  html {
+    font-size: 22px;
+  }
+}
+
+/* Adjust for 1440px screens */
+@media (max-width: 1440px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Adjust for 1280px screens */
+@media (max-width: 1280px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+/* Adjust for tablets (1024px) */
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+/* Adjust for mobile landscape */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Adjust for mobile portrait */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  color: #4A5565;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
+}
+
+p,
+span,
+a,
+small,
+label {
+  font-family: "Inter", sans-serif;
+}
+
+/* Custom input styling to ensure only bottom borders */
+.login-input-bottom-border {
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.login-input-bottom-border:hover {
+  background-color: rgba(234, 91, 40, 0.1) !important;
+  border-bottom: 1px solid rgba(234, 91, 40, 0.5) !important;
+}
+
+.login-input-bottom-border:focus {
+  border: none !important;
+  border-bottom: 1px solid rgba(234, 91, 40, 0.8) !important;
+  background-color: rgba(234, 91, 40, 0.15) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.login-select-bottom-border {
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.login-select-bottom-border:hover {
+  background-color: rgba(234, 91, 40, 0.1) !important;
+  border-bottom: 1px solid rgba(234, 91, 40, 0.5) !important;
+}
+
+.login-select-bottom-border:focus {
+  border: none !important;
+  border-bottom: 1px solid rgba(234, 91, 40, 0.8) !important;
+  background-color: rgba(234, 91, 40, 0.15) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Dropdown option styling */
+.login-select-bottom-border option {
+  background-color: #58398D !important;
+  color: white !important;
+  padding: 8px 12px !important;
+}
+
+.login-select-bottom-border option:hover,
+.login-select-bottom-border option:focus {
+  background-color: #EA5B28 !important;
+  color: white !important;
+}
+
+/* Additional dropdown styling for better appearance */
+select.login-select-bottom-border {
+  cursor: pointer !important;
+}
+
+select.login-select-bottom-border:hover {
+  background-color: rgba(234, 91, 40, 0.1) !important;
+}
+
+select.login-select-bottom-border:focus {
+  background-color: rgba(234, 91, 40, 0.15) !important;
+}
+
+/* Ensure dropdown options have proper spacing and hover effects */
+select.login-select-bottom-border option {
+  background-color: #58398D !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  margin: 2px 0 !important;
+  border-radius: 4px !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+select.login-select-bottom-border option:hover,
+select.login-select-bottom-border option:focus,
+select.login-select-bottom-border option:checked {
+  background-color: #EA5B28 !important;
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+/* Custom dropdown arrow styling */
+select.login-select-bottom-border {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px !important;
+  padding-right: 40px !important;
+}
+
+/* Animated Logo Styles */
+.animated-logo {
+  animation: logoFlipGlow 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(234, 91, 40, 0.6)) 
+          drop-shadow(0 0 40px rgba(234, 91, 40, 0.4))
+          drop-shadow(0 0 60px rgba(234, 91, 40, 0.2));
+  transition: all 0.3s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.animated-logo:hover {
+  filter: drop-shadow(0 0 30px rgba(234, 91, 40, 0.8)) 
+          drop-shadow(0 0 60px rgba(234, 91, 40, 0.6))
+          drop-shadow(0 0 90px rgba(234, 91, 40, 0.4));
+  transform: scale(1.05);
+  animation-play-state: paused;
+}
+
+@keyframes logoFlipGlow {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    filter: drop-shadow(0 0 20px rgba(234, 91, 40, 0.6)) 
+            drop-shadow(0 0 40px rgba(234, 91, 40, 0.4))
+            drop-shadow(0 0 60px rgba(234, 91, 40, 0.2));
+  }
+  12.5% {
+    transform: rotateY(45deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(234, 91, 40, 0.7)) 
+            drop-shadow(0 0 50px rgba(234, 91, 40, 0.5))
+            drop-shadow(0 0 75px rgba(234, 91, 40, 0.3));
+  }
+  25% {
+    transform: rotateY(90deg) scale(1.1);
+    filter: drop-shadow(0 0 30px rgba(234, 91, 40, 0.8)) 
+            drop-shadow(0 0 60px rgba(234, 91, 40, 0.6))
+            drop-shadow(0 0 90px rgba(234, 91, 40, 0.4));
+  }
+  37.5% {
+    transform: rotateY(135deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(234, 91, 40, 0.7)) 
+            drop-shadow(0 0 50px rgba(234, 91, 40, 0.5))
+            drop-shadow(0 0 75px rgba(234, 91, 40, 0.3));
+  }
+  50% {
+    transform: rotateY(180deg) scale(1);
+    filter: drop-shadow(0 0 20px rgba(234, 91, 40, 0.6)) 
+            drop-shadow(0 0 40px rgba(234, 91, 40, 0.4))
+            drop-shadow(0 0 60px rgba(234, 91, 40, 0.2));
+  }
+  62.5% {
+    transform: rotateY(225deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(234, 91, 40, 0.7)) 
+            drop-shadow(0 0 50px rgba(234, 91, 40, 0.5))
+            drop-shadow(0 0 75px rgba(234, 91, 40, 0.3));
+  }
+  75% {
+    transform: rotateY(270deg) scale(1.1);
+    filter: drop-shadow(0 0 30px rgba(234, 91, 40, 0.8)) 
+            drop-shadow(0 0 60px rgba(234, 91, 40, 0.6))
+            drop-shadow(0 0 90px rgba(234, 91, 40, 0.4));
+  }
+  87.5% {
+    transform: rotateY(315deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(234, 91, 40, 0.7)) 
+            drop-shadow(0 0 50px rgba(234, 91, 40, 0.5))
+            drop-shadow(0 0 75px rgba(234, 91, 40, 0.3));
+  }
+  100% {
+    transform: rotateY(360deg) scale(1);
+    filter: drop-shadow(0 0 20px rgba(234, 91, 40, 0.6)) 
+            drop-shadow(0 0 40px rgba(234, 91, 40, 0.4))
+            drop-shadow(0 0 60px rgba(234, 91, 40, 0.2));
+  }
+}
+
+/* Alternative pulsing glow effect */
+.animated-logo-glow {
+  animation: logoGlow 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(234, 91, 40, 0.5)) 
+          drop-shadow(0 0 30px rgba(234, 91, 40, 0.3))
+          drop-shadow(0 0 45px rgba(234, 91, 40, 0.1));
+}
+
+/* VisionTag */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #dce2f3;
+  border-radius: 10px;
+}
+
+.upload-zone-dashed {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23C3C6D7FF' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(234, 91, 40, 0.5)) 
+            drop-shadow(0 0 30px rgba(234, 91, 40, 0.3))
+            drop-shadow(0 0 45px rgba(234, 91, 40, 0.1));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(234, 91, 40, 0.8)) 
+            drop-shadow(0 0 50px rgba(234, 91, 40, 0.6))
+            drop-shadow(0 0 75px rgba(234, 91, 40, 0.4));
+    transform: scale(1.05);
+  }
+}
+
+
