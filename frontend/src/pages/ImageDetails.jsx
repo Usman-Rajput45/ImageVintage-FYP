@@ -7,6 +7,46 @@ import {
   getAnalysisById,
   updateAnalysisTags,
 } from "../services/analysisService";
+<<<<<<< HEAD
+=======
+import { HISTORY_ITEMS } from "../data/historyItems";
+
+const normalizeFallbackTags = (tags = []) => {
+  return tags.map((tag, index) => {
+    if (typeof tag === "string") {
+      return {
+        label: tag,
+        percentage: Math.max(60, 100 - index * 10),
+      };
+    }
+
+    const confidence = tag.confidence ?? tag.score ?? tag.percentage ?? 0;
+    return {
+      label: tag.label || tag.name || String(tag),
+      percentage: Math.max(0, Math.min(100, Number(confidence) || 0)),
+    };
+  });
+};
+
+const buildFallbackItem = (fallback) => {
+  if (!fallback) return null;
+
+  const fallbackDate = fallback.createdAt || (fallback.date && fallback.time ? `${fallback.date} ${fallback.time}` : null);
+  const parsedDate = fallbackDate ? new Date(fallbackDate) : null;
+  const createdAt = parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : undefined;
+
+  return {
+    imageSrc: fallback.imageUrl,
+    imageUrl: fallback.imageUrl,
+    fileName: fallback.filename || fallback.fileName || "analysis.jpg",
+    caption: fallback.caption || "Analysis details are unavailable, showing saved history metadata.",
+    tags: normalizeFallbackTags(fallback.tags || []),
+    createdAt,
+    resolution: fallback.resolution || "",
+    fileSize: fallback.fileSize || "",
+  };
+};
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 
 const ImageDetails = () => {
   const { id } = useParams();
@@ -23,6 +63,7 @@ const ImageDetails = () => {
 
   useEffect(() => {
     const loadItem = async () => {
+<<<<<<< HEAD
       try {
         setLoading(true);
         setDetailError(null);
@@ -31,13 +72,93 @@ const ImageDetails = () => {
           setItem(result);
           setTags(result.tags || []);
         } else {
+=======
+      let fallbackItem = null;
+
+      try {
+        setLoading(true);
+        setDetailError(null);
+
+        const idValue = id?.toString?.().trim?.();
+        console.log("[ImageDetails] Loading analysis for id:", idValue);
+
+        const parsedIndex = Number.isFinite(Number(idValue)) ? Number.parseInt(idValue, 10) : NaN;
+
+        let historyMatch = HISTORY_ITEMS.find(
+          (historyItem) => String(historyItem.id).trim() === idValue
+        );
+
+        if (!historyMatch && Number.isInteger(parsedIndex) && parsedIndex >= 1 && parsedIndex <= HISTORY_ITEMS.length) {
+          historyMatch = HISTORY_ITEMS[parsedIndex - 1];
+        }
+
+        if (!historyMatch) {
+          const lowerId = (idValue || "").toLowerCase();
+          historyMatch = HISTORY_ITEMS.find((historyItem) => {
+            const hid = String(historyItem.id || "").toLowerCase();
+            const fname = String(historyItem.filename || historyItem.fileName || "").toLowerCase();
+            const iurl = String(historyItem.imageUrl || historyItem.imageSrc || "").toLowerCase();
+
+            return (
+              hid === lowerId ||
+              hid.includes(lowerId) ||
+              lowerId.includes(hid) ||
+              fname === lowerId ||
+              fname.includes(lowerId) ||
+              iurl.includes(lowerId)
+            );
+          });
+        }
+
+        fallbackItem = historyMatch ? buildFallbackItem(historyMatch) : null;
+        console.log("[ImageDetails] Fallback item:", fallbackItem ? "found" : "not found");
+
+        if (fallbackItem) {
+          setItem(fallbackItem);
+          setTags(fallbackItem.tags || []);
+        }
+
+        console.log("[ImageDetails] Fetching analysis by id:", idValue);
+        const result = await getAnalysisById(idValue);
+        console.log("[ImageDetails] API result:", result);
+
+        if (result && (result.imageSrc || result.imageUrl)) {
+          const mergedItem = {
+            ...fallbackItem,
+            ...result,
+            imageSrc: result?.imageSrc || result?.imageUrl || fallbackItem?.imageSrc,
+            imageUrl: result?.imageUrl || result?.imageSrc || fallbackItem?.imageUrl,
+            caption: result?.caption || fallbackItem?.caption,
+            fileName: result?.fileName || fallbackItem?.fileName,
+            fileSize: result?.fileSize || fallbackItem?.fileSize,
+            resolution: result?.resolution || fallbackItem?.resolution,
+            createdAt: result?.createdAt || fallbackItem?.createdAt,
+            tags: result?.tags?.length ? result.tags : fallbackItem?.tags,
+          };
+          console.log("[ImageDetails] Merged item:", mergedItem);
+          setItem(mergedItem);
+          setTags(mergedItem.tags || []);
+          return;
+        }
+
+        if (!fallbackItem) {
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
           setItem(null);
           setTags([]);
         }
       } catch (error) {
+<<<<<<< HEAD
         setDetailError(error.response?.data?.message || error.message || "Could not load analysis details. Please try again.");
         setItem(null);
         setTags([]);
+=======
+        console.error("[ImageDetails] Failed to load analysis details", error);
+        setDetailError(error.response?.data?.message || error.message || "Could not load analysis details. Please try again.");
+        if (!fallbackItem) {
+          setItem(null);
+          setTags([]);
+        }
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
       } finally {
         setLoading(false);
       }

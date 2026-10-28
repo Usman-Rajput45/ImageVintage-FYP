@@ -2,7 +2,11 @@ import axios from "axios";
 
 // Create the API instance without store dependencies
 const api = axios.create({
+<<<<<<< HEAD
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+=======
+  baseURL: import.meta.env.VITE_API_URL || "https://api.example.com",
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",

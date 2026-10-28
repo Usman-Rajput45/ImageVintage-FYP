@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import { Navigate, useLocation } from "react-router-dom";
+=======
+import { useLocation } from "react-router-dom";
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 import TopNav from "../components/TopNav";
 import Footer from "../components/Footer";
 import ImagePreviewCard from "../components/ImagePreviewCard";
@@ -11,12 +15,30 @@ const ResultsPage = () => {
   const location = useLocation();
   const resultsData = location?.state?.results || {};
 
+<<<<<<< HEAD
   // No analysis in router state (e.g. page opened directly) -> nothing to show, go back to upload.
   if (!resultsData.imageSrc) {
     return <Navigate to="/" replace />;
   }
 
   const data = resultsData;
+=======
+  // Mock data - will be replaced with API response
+  const mockResults = {
+    imageSrc: "https://lh3.googleusercontent.com/aida-public/AB6AXuABAoJ1-Wa7uvXVYMdw2JBvsBUGWWp7LENRY5oioGMGtJt1H9a4dkApq0_W6y-tddFH403KTQGkGDaouSBPFomn60D5JxazMrNUECjKcLdUJ7at0bnQs7tppAc-M_8VQVoFZguS43hDZhXrKDXj_Q5LjjH53svY5pUGG37dUIaqJ_FOkZLYVAcL6ySzeoHXwxMyNfowiJ-jjacmSs85XRlMWQo5m6FvD7isRQYeG9yFvWIaaS9xbSR0xr0o-bq3ej2B6ZXloumYhUQ",
+    fileName: "cat_table.jpg",
+    fileSize: "2.4 MB",
+    caption: "A cat sitting on a wooden table near a window",
+    tags: [
+      { label: "Cat", percentage: 94, bgColor: "bg-[#e7f5ed]", textColor: "text-[#00714d]", dotColor: "#00714d" },
+      { label: "Indoor", percentage: 87, bgColor: "bg-[#e7f5ed]", textColor: "text-[#00714d]", dotColor: "#00714d" },
+      { label: "Table", percentage: 72, bgColor: "bg-[#fffbeb]", textColor: "text-[#854d0e]", dotColor: "#854d0e" },
+      { label: "Window", percentage: 45, bgColor: "bg-[#f3f4f6]", textColor: "text-[#4b5563]", dotColor: "#4b5563" },
+    ],
+  };
+
+  const data = resultsData.imageSrc ? resultsData : mockResults;
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
   const normalizedTags = Array.isArray(data.tags)
     ? data.tags.map((tag) => ({
         label: tag.label || tag.name || tag,

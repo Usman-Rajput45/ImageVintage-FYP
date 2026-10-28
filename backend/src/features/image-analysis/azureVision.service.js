@@ -30,7 +30,11 @@ const analyzeImageFile = async (filePath) => {
         "Ocp-Apim-Subscription-Key": env.azure.key,
         "Content-Type": "application/octet-stream",
       },
+<<<<<<< HEAD
       timeout: env.azure.timeoutMs, // NFR-01 (configurable via AZURE_TIMEOUT_MS)
+=======
+      timeout: 30000, // NFR-01: keep well under the 3-5s target end-to-end where possible
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
     });
   } catch (error) {
     if (error.code === "ECONNABORTED") {

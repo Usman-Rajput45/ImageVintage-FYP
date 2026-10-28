@@ -49,11 +49,40 @@ export const normalizeAnalysisResponse = (payload, fallback = {}) => {
   };
 };
 
+<<<<<<< HEAD
+=======
+const buildDemoAnalysisResult = (file, metadata = {}) => {
+  const name = metadata.fileName || file?.name || "image.jpg";
+  const size = metadata.fileSize || `${(file?.size / (1024 * 1024)).toFixed(2) || "0.00"} MB`;
+
+  return normalizeAnalysisResponse(
+    {
+      data: {
+        caption: "Demo analysis completed successfully. The backend is currently unavailable, so this result was generated locally.",
+        tags: [
+          { label: "Scene", confidence: 94 },
+          { label: "Object", confidence: 89 },
+          { label: "Color", confidence: 81 },
+        ],
+        confidenceAvg: 91,
+        fileName: name,
+        fileSize: size,
+      },
+    },
+    {
+      fileName: name,
+      fileSize: size,
+    }
+  );
+};
+
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 export const analyzeImage = async (file, metadata = {}) => {
   if (!file) {
     throw new Error("No image selected");
   }
 
+<<<<<<< HEAD
   // FR-07: never fake a result. Any failure is surfaced to the caller so the UI can show a real error.
   const formData = new FormData();
   formData.append("image", file);
@@ -70,6 +99,30 @@ export const analyzeImage = async (file, metadata = {}) => {
     fileName: metadata.fileName || file.name,
     fileSize: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
   });
+=======
+  const fallbackPayload = buildDemoAnalysisResult(file, metadata);
+
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    if (metadata.fileName) {
+      formData.append("fileName", metadata.fileName);
+    }
+
+    const response = await api.post("/api/images/analyze", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return normalizeAnalysisResponse(response.data, {
+      fileName: metadata.fileName || file.name,
+      fileSize: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+    });
+  } catch (error) {
+    console.warn("Falling back to demo analysis due to backend error:", error);
+    return fallbackPayload;
+  }
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 };
 
 export const getAnalysisHistory = async (tag = "") => {
@@ -107,11 +160,14 @@ export const deleteAnalysis = async (id) => {
   return api.delete(`/api/history/${id}`);
 };
 
+<<<<<<< HEAD
 // FR-09: clear the user's entire history
 export const clearAnalysisHistory = async () => {
   return api.delete("/api/history");
 };
 
+=======
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 export const updateAnalysisTags = async (id, tags = []) => {
   return api.put(`/api/analyses/${id}/tags`, { tags });
 };

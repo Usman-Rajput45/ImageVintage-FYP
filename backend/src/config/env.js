@@ -28,7 +28,10 @@ module.exports = {
   azure: {
     key: process.env.AZURE_VISION_KEY,
     endpoint: process.env.AZURE_VISION_ENDPOINT,
+<<<<<<< HEAD
     timeoutMs: Number(process.env.AZURE_TIMEOUT_MS) || 15000,
+=======
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
   },
 
   maxUploadMb: Number(process.env.MAX_UPLOAD_MB) || 10,

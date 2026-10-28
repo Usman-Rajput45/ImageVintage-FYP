@@ -6,8 +6,13 @@ import Footer from "../components/Footer";
 import ImageCard from "../components/ImageCard";
 import HistoryToolbar from "../components/visiontag/HistoryToolbar";
 import HistoryPagination from "../components/visiontag/HistoryPagination";
+<<<<<<< HEAD
 import { HISTORY_ITEMS_PER_PAGE } from "../data/historyItems";
 import { clearAnalysisHistory, deleteAnalysis, getAnalysisHistory } from "../services/analysisService";
+=======
+import { HISTORY_ITEMS, HISTORY_ITEMS_PER_PAGE } from "../data/historyItems";
+import { deleteAnalysis, getAnalysisHistory } from "../services/analysisService";
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
 
 const monthNames = {
   Jan: 0,
@@ -87,7 +92,11 @@ const HistoryPage = () => {
         setHistoryItems(Array.isArray(items) ? items : []);
       } catch (error) {
         setLoadError(error.response?.data?.message || error.message || "Could not load your history.");
+<<<<<<< HEAD
         setHistoryItems([]);
+=======
+        setHistoryItems(HISTORY_ITEMS); // fall back to sample data so the layout can still be reviewed
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
       } finally {
         setLoading(false);
       }
@@ -107,6 +116,7 @@ const HistoryPage = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleClearHistory = async () => {
     if (!window.confirm("Delete your entire analysis history? This cannot be undone.")) return;
     try {
@@ -118,6 +128,8 @@ const HistoryPage = () => {
     }
   };
 
+=======
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
   const filteredItems = useMemo(() => {
     return historyItems
       .filter((item) => {
@@ -201,6 +213,7 @@ const HistoryPage = () => {
               }}
             />
 
+<<<<<<< HEAD
             {historyItems.length > 0 && (
               <div className="mb-vt-md flex justify-end">
                 <button
@@ -216,6 +229,11 @@ const HistoryPage = () => {
             {loadError && (
               <p role="alert" className="mb-vt-md rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">
                 {loadError}
+=======
+            {loadError && (
+              <p role="alert" className="mb-vt-md rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">
+                {loadError} Showing sample data instead.
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
               </p>
             )}
 

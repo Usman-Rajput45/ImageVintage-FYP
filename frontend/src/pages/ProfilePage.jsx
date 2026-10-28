@@ -155,8 +155,11 @@ const ProfilePage = () => {
                 >
                   {savingDetails ? "Saving…" : "Save changes"}
                 </button>
+<<<<<<< HEAD
 
                
+=======
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
               </form>
             </section>
 

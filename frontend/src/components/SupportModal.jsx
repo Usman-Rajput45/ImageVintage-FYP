@@ -17,7 +17,11 @@ const SupportModal = ({ onClose }) => {
       id: "formats",
       question: "Supported image formats",
       answer:
+<<<<<<< HEAD
         "VisionTag supports JPG and PNG formats (up to 10 MB). For optimal results, upload clear, high-resolution images with well-defined subjects.",
+=======
+        "VisionTag supports JPG, PNG, and WebP formats. For optimal results, upload clear, high-resolution images with well-defined subjects.",
+>>>>>>> 3b3f2cce2d6eff1255faa56c425fe24c156a5633
     },
     {
       id: "rateLimits",
